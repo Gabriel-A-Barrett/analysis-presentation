@@ -27,6 +27,63 @@
 	<body>
 		<div class="reveal">
 			<div class="slides">
+
+				<section>
+					<div class="mermaid-container">
+						<pre class="mermaid">
+%%{init: {'theme': 'dark', 'themeVariables': { 'fontSize': '18px' }}}%%
+classDiagram
+    class DBConnector {
+        -conn: Sql
+        +connect(): Sql
+        +disconnect(): void
+    }
+
+    class VariantFilteringDBConnector {
+        +getRegionsFromFeatures(): String
+    }
+
+    class CompletionMessage {
+        +completionMessage: Map
+        +initCompletionMessage(): void
+        +writeCompletionJson(): void
+        +addCompletionMessageField(): void
+    }
+
+    class WorkflowVariantFiltering {
+        -params: Map
+        -final_vcf: Map
+        -sampleDiscordance: Map
+        +getConnection(): VariantFilteringDBConnector
+        +registerMessageHandlers(): void
+        +setFinalVcf(): void
+        ...
+    }
+
+	class SharedStockNamesByStudy {
+		-tgdrs: List
+		-studiesNames: Map
+		-preservedStudiesNames: Map
+		-sampleMetaData: Map
+		-sampleTgdrs: Map
+		+readSharedSamples(): void
+		+retainHighestSample(): Map
+		+getStandardName(): Set
+		+renameStudiesNames(): void
+		+removeFirstHyphenInstance(): String
+		+createSampleWithDuplicateStudiesObject(): Maps
+		+buildSampleNamesQuery(List tgdrs): String
+		+getPairwiseComparison(): Map
+	}
+
+    VariantFilteringDBConnector --|> DBConnector : extends
+    WorkflowVariantFiltering ..> VariantFilteringDBConnector : uses
+    WorkflowVariantFiltering ..> CompletionMessage : uses
+
+						</pre>
+					</div>
+				</section>
+
 				<section>
 					<p style="letter-spacing: 2px;">| <strong>Analysis Panel</strong> | <strong>Landscape Genomics</strong> | <strong>Demo</strong> |</p>
 					<img src="https://treegenesdb.org/sites/all/modules/custom_modules/cartogratree_landing/images/cp_header_2024.jpg">
